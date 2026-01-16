@@ -1,16 +1,45 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import BlogCard from '../components/BlogCard.astro';
+import db from '../lib/db';
 
+const posts = db.prepare(`
+  SELECT p.id, p.title, p.content, p.created_at, u.username
+  FROM posts p
+  JOIN users u ON p.user_id = u.id
+  ORDER BY p.created_at DESC
+  LIMIT 5
+`).all();
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Home - BlogSite">
+  <div class="flex flex-col min-h-screen">
+    <Header />
+    
+    <main class="flex-grow max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+      <h1 class="text-3xl font-bold text-gray-900 mb-6">Recent Blog Posts</h1>
+      
+      {posts.length === 0 ? (
+        <div class="text-center py-16 card">
+          <p class="text-xl text-gray-600">No blog posts yet. Be the first to create one!</p>
+        </div>
+      ) : (
+        <div class="space-y-4">
+          {posts.map((post: any) => (
+            <BlogCard
+              id={post.id}
+              title={post.title}
+              content={post.content}
+              username={post.username}
+              createdAt={post.created_at}
+            />
+          ))}
+        </div>
+      )}
+    </main>
+    
+    <Footer />
+  </div>
+</Layout>

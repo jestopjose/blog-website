@@ -1,0 +1,39 @@
+---
+import db from '../lib/db';
+
+interface Props {
+  postId: number;
+}
+
+const { postId } = Astro.props;
+
+const comments = db.prepare(`
+  SELECT c.id, c.content, c.created_at, u.username
+  FROM comments c
+  JOIN users u ON c.user_id = u.id
+  WHERE c.post_id = ?
+  ORDER BY c.created_at DESC
+`).all(postId);
+---
+
+<div class="mt-8">
+  <h3 class="text-xl font-bold mb-4">Comments ({comments.length})</h3>
+  
+  {comments.length === 0 ? (
+    <p class="text-gray-600">No comments yet. Be the first to comment!</p>
+  ) : (
+    <div class="space-y-4">
+      {comments.map((comment: any) => (
+        <div class="bg-gray-50 rounded-lg p-4">
+          <div class="flex justify-between items-start mb-2">
+            <span class="font-semibold text-gray-900">{comment.username}</span>
+            <span class="text-sm text-gray-600">
+              {new Date(comment.created_at).toLocaleDateString()}
+            </span>
+          </div>
+          <p class="text-gray-700">{comment.content}</p>
+        </div>
+      ))}
+    </div>
+  )}
+</div>

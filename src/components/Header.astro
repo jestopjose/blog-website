@@ -1,0 +1,40 @@
+---
+import { getCurrentUser } from '../lib/auth';
+
+const user = getCurrentUser(Astro.cookies);
+---
+
+<header style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center space-x-8">
+        <a href="/" class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          BlogSite
+        </a>
+        <a href="/" class="text-gray-700 hover:text-blue-600 font-semibold transition-colors">Home</a>
+      </div>
+      
+      <div class="flex items-center space-x-4">
+        {user ? (
+          <>
+            <a href="/dashboard" class="text-gray-700 hover:text-blue-600 font-semibold transition-colors">Dashboard</a>
+            <a href="/create-post" class="text-gray-700 hover:text-blue-600 font-semibold transition-colors">New Post</a>
+            <a href="/account" class="text-gray-700 hover:text-blue-600 font-semibold transition-colors">Account</a>
+            <form action="/api/auth/logout" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-danger">
+                Logout
+              </button>
+            </form>
+          </>
+        ) : (
+          <>
+            <a href="/login" class="text-gray-700 hover:text-blue-600 font-semibold transition-colors">Login</a>
+            <a href="/signup" class="btn btn-primary">
+              Sign Up
+            </a>
+          </>
+        )}
+      </div>
+    </div>
+  </nav>
+</header>
