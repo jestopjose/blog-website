@@ -5,10 +5,7 @@
 [build.environment]
   NODE_VERSION = "20"
 
-[functions]
-  node_bundler = "esbuild"
-
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/render"
+  to = "/index.html"
   status = 200
