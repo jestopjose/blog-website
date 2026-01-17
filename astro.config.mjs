@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
+import tailwind from '@tailwindcss/vite';
 
 export default defineConfig({
   output: 'server',
@@ -8,9 +9,10 @@ export default defineConfig({
   }),
   server: {
     port: Number(process.env.PORT) || 4321,
-    host: '0.0.0.0' // Changed from true to '0.0.0.0'
+    host: '0.0.0.0'
   },
   vite: {
+    plugins: [tailwind()],
     server: {
       allowedHosts: [
         'jestopblog.onrender.com',
