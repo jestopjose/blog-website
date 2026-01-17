@@ -8,11 +8,14 @@ export default defineConfig({
   }),
   server: {
     port: Number(process.env.PORT) || 4321,
-    host: '0.0.0.0'
+    host: '0.0.0.0' // Changed from true to '0.0.0.0'
   },
   vite: {
     server: {
-      allowedHosts: true // Allow all hosts (simpler for deployment)
+      allowedHosts: [
+        'jestopblog.onrender.com',
+        '.onrender.com', // This allows any Render subdomain
+      ]
     }
   }
 });
