@@ -8,6 +8,11 @@ export default defineConfig({
   }),
   server: {
     port: Number(process.env.PORT) || 4321,
-    host: true
+    host: '0.0.0.0'
+  },
+  vite: {
+    server: {
+      allowedHosts: true // Allow all hosts (simpler for deployment)
+    }
   }
 });
